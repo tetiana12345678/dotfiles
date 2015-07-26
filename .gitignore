@@ -1,0 +1,18 @@
+#ignore everything
+*
+
+#except those:
+
+!.zshrc
+
+!.gitignore
+!.gitconfig
+!.gitignore_global
+!.gitmessage
+
+!.vimrc
+
+#need all those to see change in tracked.
+!.vim/colors/
+!.vim/
+!.vim/colors/solarized.vim
