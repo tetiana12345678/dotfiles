@@ -1,0 +1,4 @@
+---
+BUNDLE_JOBS: '3'
+BUNDLE_CACHE_ALL: true
+BUNDLE_NO_PRUNE: 'true'

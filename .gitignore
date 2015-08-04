@@ -12,6 +12,9 @@
 
 !.vimrc
 
+!.bundle/
+!.bundle/config
+
 #need all those to see change in tracked.
 !.vim/colors/
 !.vim/
