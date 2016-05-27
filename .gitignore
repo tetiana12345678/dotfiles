@@ -3,7 +3,8 @@
 
 #except those:
 
-!.zshrc
+!.bashrc
+!.bash_profile
 
 !.gitignore
 !.gitconfig
