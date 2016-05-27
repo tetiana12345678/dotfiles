@@ -6,22 +6,26 @@ filetype off                  " required
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
-Plugin 'gmarik/Vundle.vim'  " let Vundle manage Vundle, required
-Plugin 'tpope/vim-rails'    " go to relevant spec
-Plugin 'kien/ctrlp.vim'     "Fuzzy file, buffer search. ctrl+p
 Plugin 'bling/vim-airline'  " Lean & mean status/tabline for vim that’s light as air
-Plugin 'tpope/vim-fugitive'
+Plugin 'bogado/file-line'     "works for open files on specified lines. :e bla-bla:67
+Plugin 'christoomey/vim-tmux-navigator'  "to switch beetwen tabs with ctrl + vim navigation key [hjkl]
+Plugin 'elixir-lang/vim-elixir' "Elixir syntax highlight
 Plugin 'git://git.wincent.com/command-t.git'  " Git plugin not hosted on GitHub
+Plugin 'gmarik/Vundle.vim'  " let Vundle manage Vundle, required
+Plugin 'kien/ctrlp.vim'     "Fuzzy file, buffer search. ctrl+p
 Plugin 'rking/ag.vim'       " silversearch to make ,gg work
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic' " Syntax check hacks for Vim, see: http://vimawesome.com/plugin/syntastic
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-rails'    " go to relevant spec
 Plugin 'tpope/vim-commentary' "plugin for using gc to comment out lines
-Plugin 'bogado/file-line'     "works for open files on specified lines. :e bla-bla:67
 Plugin 'vim-scripts/matchit.zip' " match beginning and end of the block, like {/( do-end, etc.
-Plugin 'christoomey/vim-tmux-navigator'  "to switch beetwen tabs with ctrl + vim navigation key [hjkl]
 call vundle#end()            " required
 filetype plugin indent on    " required
-"Run :VundleInstall to install or uninstall plugins
+
+"clean setup requires
+"git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+"Run :PluginInstall to install or uninstall plugins
 "
 "-------Non Plugin customization--------
 "
@@ -49,6 +53,12 @@ vnoremap < <gv
 vnoremap > >gv
 
 " nice ,gg
+"---------Have to run this to make ,gg work"
+"brew install the_silver_searcher
+"then run :PluginInstall
+"----------------
+let g:ackprg = 'ag --nogroup --nocolor --column'
+let g:ag_working_path_mode="r"
 nnoremap <Leader>gg :Ag ""<Left>
 
 set autoindent          " Auto-indent new lines
@@ -135,7 +145,6 @@ nnoremap <CR> :let @/=""<CR><CR>
 " strip trailing whitespace:
 autocmd BufWritePre * :%s/\s\+$//e
 
-" ARROW KEYS ARE UNACCEPTABLE according to mr. Faithfull
 map <Left> :echo "no!"<cr>
 map <Right> :echo "no!"<cr>
 map <Up> :echo "no!"<cr>
