@@ -1,6 +1,11 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
+"---------Have to run this to make ,gg work"
+"brew install the_silver_searcher
+"then run :PluginInstall
+"----------------
+"
 "-----------Plugins go here-----------
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -19,6 +24,7 @@ Plugin 'scrooloose/syntastic' " Syntax check hacks for Vim, see: http://vimaweso
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-rails'    " go to relevant spec
 Plugin 'tpope/vim-commentary' "plugin for using gc to comment out lines
+Plugin 'Shougo/neocomplete.vim'  "neocomplete
 Plugin 'vim-scripts/matchit.zip' " match beginning and end of the block, like {/( do-end, etc.
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -28,6 +34,83 @@ filetype plugin indent on    " required
 "Run :PluginInstall to install or uninstall plugins
 "
 "-------Non Plugin customization--------
+"----------------
+"Neocomplete config
+"----------------
+"Note: This option must be set in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
+" Disable AutoComplPop.
+let g:acp_enableAtStartup = 0
+" Use neocomplete.
+let g:neocomplete#enable_at_startup = 1
+" Use smartcase.
+let g:neocomplete#enable_smart_case = 1
+" Set minimum syntax keyword length.
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+
+" Define dictionary.
+let g:neocomplete#sources#dictionary#dictionaries = {
+    \ 'default' : '',
+    \ 'vimshell' : $HOME.'/.vimshell_hist',
+    \ 'scheme' : $HOME.'/.gosh_completions'
+        \ }
+
+" Define keyword.
+if !exists('g:neocomplete#keyword_patterns')
+    let g:neocomplete#keyword_patterns = {}
+endif
+let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+" Plugin key-mappings.
+inoremap <expr><C-g>     neocomplete#undo_completion()
+inoremap <expr><C-l>     neocomplete#complete_common_string()
+
+" Recommended key-mappings.
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+  " For no inserting <CR> key.
+  "return pumvisible() ? "\<C-y>" : "\<CR>"
+endfunction
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+" Close popup by <Space>.
+"inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
+
+" AutoComplPop like behavior.
+"let g:neocomplete#enable_auto_select = 1
+
+" Shell like behavior(not recommended).
+"set completeopt+=longest
+"let g:neocomplete#enable_auto_select = 1
+"let g:neocomplete#disable_auto_complete = 1
+"inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
+
+" " Enable omni completion.
+" autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+" autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+" autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+" autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+" autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+" Enable heavy omni completion.
+if !exists('g:neocomplete#sources#omni#input_patterns')
+  let g:neocomplete#sources#omni#input_patterns = {}
+endif
+"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+
+" For perlomni.vim setting.
+" https://github.com/c9s/perlomni.vim
+let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+"----------------
+"end of Neocompatible config
+"----------------
 "
 "remap leader key to comma
 let mapleader = ","
@@ -51,16 +134,41 @@ set showmatch
 "reselect visual block after indent/outdent
 vnoremap < <gv
 vnoremap > >gv
-
+"-----------------------
+"Ag stuff
+"----------------------
+" bind K to grep word under cursor
+nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 " nice ,gg
-"---------Have to run this to make ,gg work"
-"brew install the_silver_searcher
-"then run :PluginInstall
-"----------------
+
+"-------------from Bryan--------
 let g:ackprg = 'ag --nogroup --nocolor --column'
 let g:ag_working_path_mode="r"
+nnoremap <Leader>gg :Ag ""<Left>|                                         " Recursively grep for text matches in all files under the current directory
+vnoremap <Leader>gg <Esc>:Ag "<C-r>=GetVisual()<CR>"<Left>|               " Same as above, but using the selected text
+nnoremap <Leader>gf :AgFile ""<Left>|                                     " Recursively grep for file matches in the current directory
+vnoremap <Leader>gf <Esc>:AgFile "<C-r>=GetVisual()<CR>"<Left>|
 nnoremap <Leader>gg :Ag ""<Left>
+"-------------from Bryan--------
 
+" Ag command
+let g:ag_highlight=1
+
+" Use Silver Searcher instead of grep
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+ " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
+endif
+
+"-----------------------
+"end of Ag stuff
+"----------------------
 set autoindent          " Auto-indent new lines
 "set solarized colorscheme
 syntax enable
@@ -102,9 +210,6 @@ set number
 " CtrlP
 let g:ctrlp_by_filename = 1
 
-" Ag command
-let g:ag_highlight=1
-
 "Syntastic error message highlight
 " ====[ Syntastic ]====
 set statusline+=%#warningmsg#
@@ -119,18 +224,6 @@ let g:syntastic_html_tidy_ignore_errors=["proprietary attribute", "trimming empt
 set incsearch
 set hlsearch
 
-" Use Silver Searcher instead of grep
-if executable('ag')
-  " Use ag over grep
-  set grepprg=ag\ --nogroup\ --nocolor
-
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-
- " ag is fast enough that CtrlP doesn't need to cache
-  let g:ctrlp_use_caching = 0
-endif
-
 set backspace=indent,eol,start    "fixes backspace in insert mode
 set confirm                       "Ask to save or use hidden buffer
 autocmd BufNewFile,BufRead Gemfile set filetype=ruby "set ruby syntax in Gemfile
@@ -143,9 +236,24 @@ nnoremap k gk
 nnoremap <CR> :let @/=""<CR><CR>
 
 " strip trailing whitespace:
-autocmd BufWritePre * :%s/\s\+$//e
+" using command at the bottom, which strips whitespaces and leave cursor where
+" it has been
+" autocmd BufWritePre * :%s/\s\+$//e
 
 map <Left> :echo "no!"<cr>
 map <Right> :echo "no!"<cr>
 map <Up> :echo "no!"<cr>
 map <Down> :echo "no!"<cr>
+
+"-------------------
+"trying to fix jumping cursor
+"--------------------
+function! <SID>StripTrailingWhitespaces()
+  let l = line(".")
+  let c = col(".")
+  %s/\s\+$//e
+  call cursor(l, c)
+endfun
+
+autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
+let g:syntastic_auto_jump = 0

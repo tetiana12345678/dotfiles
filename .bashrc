@@ -108,15 +108,10 @@ clean_history() {
 
 PROMPT_COMMAND="find_git_branch; find_git_dirty; clean_history; $PROMPT_COMMAND"
 
-# Default Git enabled prompt with dirty state
-#export PS1="\u@\h \w \[$txtcyn\]\$git_branch\[$txtred\]\$git_dirty\[$txtrst\]\$ "
+# Docker
+alias dci='docker rmi -f $(docker images --filter "dangling=true" -q --no-trunc)'
+alias dc='docker rm $(docker ps -qa --no-trunc --filter "status=exited")'
 export PS1="\w \[$txtcyn\]\$git_branch\[$txtred\]\$git_dirty\[$txtrst\]\$ "
-
-# Another variant:
-#export PS1="\[$bldgrn\]\u@\h\[$txtrst\] \w \[$bldylw\]\$git_branch\[$txtcyn\]\$git_dirty\[$txtrst\]\$ "
-
-# Default Git enabled root prompt (for use with "sudo -s")
-# export SUDO_PS1="\[$bakred\]\u@\h\[$txtrst\] \w\$ "
 
 #============================================================
 #
@@ -124,22 +119,3 @@ export PS1="\w \[$txtcyn\]\$git_branch\[$txtred\]\$git_dirty\[$txtrst\]\$ "
 #
 #============================================================
 
-export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin"
-export PATH="/usr/local/heroku/bin:$PATH" ### Added by the Heroku Toolbelt
-export PATH="/usr/local/share/npm/bin:$PATH" # Make Grunt cli work!???
-export PATH="./bin:$PATH"
-
-if [ -f $(brew --prefix)/etc/bash_completion ]; then
-  . $(brew --prefix)/etc/bash_completion
-fi
-
-export DOCKER_HOST=tcp://192.168.59.103:2376
-export DOCKER_CERT_PATH=~/.boot2docker/certs/boot2docker-vm
-export DOCKER_TLS_VERIFY=1
-export MAVEN_OPTS="-Djavax.net.ssl.trustStore=/Users/tanya/projects/noths/delivery-settings/keystore.pks -Djavax.net.ssl.trustStorePassword=ptktyfznhfdf1"
-export SSL_CERT_FILE=/usr/local/etc/openssl/cert.pem
-export PATH=~/bin/:$PATH
-
-#------Make sure you don't move it up Tanya!-----
-[ -f /usr/local/share/chruby/chruby.sh ] && source /usr/local/share/chruby/chruby.sh
-[ -f /usr/local/share/chruby/auto.sh ] && source /usr/local/share/chruby/auto.sh
