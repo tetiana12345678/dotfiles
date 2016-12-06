@@ -6,6 +6,8 @@
 *.o
 *.so
 .ruby-version
+.agignore
+.projectile
 
 # Temporary files #
 ###################
