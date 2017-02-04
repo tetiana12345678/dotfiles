@@ -20,7 +20,6 @@ Plugin 'gmarik/Vundle.vim'  " let Vundle manage Vundle, required
 Plugin 'kien/ctrlp.vim'     "Fuzzy file, buffer search. ctrl+p
 Plugin 'rking/ag.vim'       " silversearch to make ,gg work
 Plugin 'scrooloose/nerdtree'
-Plugin 'scrooloose/syntastic' " Syntax check hacks for Vim, see: http://vimawesome.com/plugin/syntastic
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-rails'    " go to relevant spec
 Plugin 'tpope/vim-commentary' "plugin for using gc to comment out lines
@@ -209,16 +208,6 @@ set number
 
 " CtrlP
 let g:ctrlp_by_filename = 1
-
-"Syntastic error message highlight
-" ====[ Syntastic ]====
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-let g:syntastic_always_populate_loc_list = 1                " Populate the locations list with the warnings
-let g:syntastic_check_on_open = 1                           " Run Syntastic when opening a file
-let g:syntastic_check_on_wq = 0                             " Skip Syntastic when closing a file
-let g:syntastic_html_tidy_ignore_errors=["proprietary attribute", "trimming empty", "<form> lacks \"action\"", "> is not recognized!", "discarding unexpected", "<img> lacks \"src\""]
 
 "Cool searching stuff
 set incsearch
