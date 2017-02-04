@@ -1,6 +1,6 @@
 [user]
-  name = Tetiana Hogg
-  email = tetiana.hogg@alliants.com
+  name = Tetiana Dushenkivska
+  email = myemail@here
 [core]
   editor = vim
   whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
